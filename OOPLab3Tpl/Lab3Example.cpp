@@ -1,21 +1,24 @@
 ﻿#if !defined(_MSC_VER)
 #define CODING_VS_CODE
 #endif
+#if !defined(CODING_VS_CODE)
+#include <clocale>
+#endif
+#define _USE_MATH_DEFINES 
 #include <iostream>
 #include <math.h>
-#if !defined(CODING_VS_CODE)
-	#include <clocale>
-#endif
+#include <stdio.h>
+#include <conio.h>
 using namespace std;
 
-class Icosahedron {
-	double a; // side of the icosahedron
+class Cube {
+	double a;
 	unsigned int color;
 public:
-	Icosahedron() : a(1.0), color(0) {}
-	Icosahedron(double ai) : a(ai), color(0) {}
-	Icosahedron(int ic) : a(1.0) { if (ic >= 0) color = ic; else color = 0; }
-	Icosahedron(double a, int c) {
+	Cube() : a(1.0), color(0) {}
+	Cube(double ai) : a(ai), color(0) {}
+	Cube(int ic) : a(1.0) { if (ic >= 0) color = ic; else color = 0; }
+	Cube(double a, int c) {
 		this->a = a;
 		if (c >= 0) color = c; else color = 0;
 	}
@@ -27,7 +30,7 @@ public:
 	{
 		if (a < 0 || a > 1.e+100)
 		{
-			cout << " Error set  a \n";
+			cout << " Error set a \n";
 			return;
 		}
 		this->a = a;
@@ -40,56 +43,57 @@ public:
 	{
 		if (c < 0 || c > 10000)
 		{
-			cout << " Error set  color \n";
+			cout << " Error set color \n";
 			return;
 		}
 		this->color = c;
 	}
 	double S() {
-		return 5 * a * a * sqrt(3.0);
+		return 6 * a * a;
 	}
 	double V() {
-		return 5 * a * a * a * (3 + sqrt(5.0)) / 12.0;
+		return a * a * a;
 	}
-	double r() {
-		return a * (3 + sqrt(5.0)) / (4.0 * sqrt(3.0));
+	double d() {
+		return a * sqrt(3.0);
 	}
-	double R() {
-		return sqrt(2 * (5 + sqrt(5.0) * a)) / 4.0;
+	double Sphere() {
+		return 4 / 3 * M_PI * ((a * a * a / 8));
 	}
 	void printInfo()
 	{
 		cout << "\n a= " << a << " color = " << color;
-		cout << "  S= " << S() << " V = " << V() << "  r= " << r() << " V = " << R() << endl;
+		cout << " S(Cube) = " << S() << " V = " << V() << " D = " << d() << "S(Sphere)= " << Sphere() << endl;
 	}
-
 };
-int mainExample1()
-{
-	Icosahedron obj;
-	obj.printInfo();
-	double in_a; int in_color;
-	cout << " Input side and color Icosahedron  "; cin >> in_a >> in_color;
-	Icosahedron obj1(in_a), obj2(in_color), obj3(in_a, in_color);
-	obj1.printInfo();
-	obj2.printInfo();
-	obj3.printInfo();
-	obj.setA(-5);
-	obj.printInfo();
-	obj.setA(5);
-	obj.printInfo();
-	obj.setA(2.e100);
-	obj.printInfo();
-	obj.setColor(-10);
-	obj.printInfo();
-	obj.setColor(10);
-	obj.printInfo();
-	obj.setColor(10001);
-	obj.printInfo();
-	cout << " End testing \n";
-	return 1;
-}
 
+	 int Task1()
+	{
+		Cube obj;
+		obj.printInfo();
+		double in_a; int in_color;
+		cout << " Input side and color Cube "; cin >> in_a >> in_color;
+		Cube obj1(in_a), obj2(in_color), obj3(in_a, in_color);
+		obj1.printInfo();
+		obj2.printInfo();
+		obj3.printInfo();
+		obj.setA(-5);
+		obj.printInfo();
+		obj.setA(5);
+		obj.printInfo();
+		obj.setA(2.e100);
+		obj.printInfo();
+		obj.setColor(-10);
+		obj.printInfo();
+		obj.setColor(10);
+		obj.printInfo();
+		obj.setColor(10001);
+		obj.printInfo();
+		cout << " End testing \n";
+		_getch(); 
+		return 0;
+
+	}
 
 // Ключове слово static 
 
@@ -221,7 +225,7 @@ bool Vec2::CompLessAll(Vec2& s) {
 	return false;
 }
 
-int mainExample3()
+int Task2()
 {
 #if !defined(CODING_VS_CODE)
 	setlocale(LC_CTYPE, "ukr");
@@ -417,7 +421,7 @@ ComplexVector ComplexVector::Add(ComplexVector& b) {
 }
 
 
-int mainExample4()
+int Task3()
 {
 	ComplexDouble a(1.0, 2), b, c;
 	cout << a << endl;
@@ -461,5 +465,4 @@ a.imag(im);
 	return 1;
 }
 
-/// 
 
