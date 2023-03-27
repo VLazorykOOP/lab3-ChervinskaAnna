@@ -257,7 +257,7 @@ public:
 		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
 		for (int i = 0; i < size; i++) {
 			mnojina[i] = 0;
-		}
+		} 
 	}
 	Set(unsigned int beg, unsigned int end, unsigned int value) {
 		this->beg = beg;
