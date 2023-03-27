@@ -9,6 +9,7 @@
 #include <math.h>
 #include <stdio.h>
 #include <conio.h>
+#include <malloc.h>
 using namespace std;
 
 class Cube {
@@ -225,7 +226,90 @@ bool Vec2::CompLessAll(Vec2& s) {
 	return false;
 }
 
+class Set {
+	unsigned int* mnojina;
+	unsigned int beg, end, size;
+
+public:
+	Set() {
+		beg = 0;
+		end = 100;
+		size = end - beg;
+		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
+		for (int i = 0; i < size; i++) {
+			mnojina[i] = 0;
+		}
+	}
+	Set(unsigned int end) {
+		beg = 0;
+		this->end = end;
+		size = end - beg;
+		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
+		for (int i = 0; i < size; i++) {
+			mnojina[i] = 0;
+		}
+	}
+
+	Set(unsigned int beg, unsigned int end) {
+		this->beg = beg;
+		this->end = end;
+		size = end - beg;
+		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
+		for (int i = 0; i < size; i++) {
+			mnojina[i] = 0;
+		}
+	}
+	Set(unsigned int beg, unsigned int end, unsigned int value) {
+		this->beg = beg;
+		this->end = end;
+		size = end - beg;
+		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
+		for (int i = 0; i < size; i++) {
+			mnojina[i] = value;
+		}
+	}
+
+	Set(const Set& ref_Point)
+	{
+		this->beg = ref_Point.beg;
+		this->end = ref_Point.end;
+		this->size = ref_Point.size;
+
+		this->mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
+		for (int i = 0; i < size; i++) {
+			this->mnojina[i] = ref_Point.mnojina[i];
+		}
+	}
+	~Set() {
+		free(mnojina);
+	}
+
+	void printInfo()
+	{
+		cout << "information " << endl;
+		cout << "Beg = " << beg << endl << "End = " << end << endl << "Size = " << size << endl;
+
+		for (int i = 0; i < size; i++) {
+			cout << "mnojina[" << i << "] = " << mnojina[i] << "\n";
+		}
+		cout << "Merge operation " << endl;
+		cout << "Intersection operation " << endl;
+		cout << "Difference operation " << endl;
+	}
+};
+
 int Task2()
+{
+	Set obj(1, 5, 4);
+	obj.printInfo();
+
+	cout << " End testing \n";
+	_getch();
+	return 0;
+
+}
+
+int Task4()
 {
 #if !defined(CODING_VS_CODE)
 	setlocale(LC_CTYPE, "ukr");
