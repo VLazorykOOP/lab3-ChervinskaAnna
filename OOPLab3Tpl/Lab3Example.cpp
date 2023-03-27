@@ -283,25 +283,111 @@ public:
 	~Set() {
 		free(mnojina);
 	}
+	void Setvalue(int i, unsigned int value ) {
+		mnojina[i] = value; 
+	}
+	int getCount(unsigned int value) {
+		int count=0;
+		for (int i = 0; i < size; i++) {
+			if (mnojina[i] == value) {
+				count++;
+			}
+		}
+		return count;
+
+	}
 
 	void printInfo()
 	{
-		cout << "information " << endl;
-		cout << "Beg = " << beg << endl << "End = " << end << endl << "Size = " << size << endl;
+	
+		cout << "Beg = " << beg << "   " << "End = " << end << "   " << "Size = " << size << "   ";
 
 		for (int i = 0; i < size; i++) {
-			cout << "mnojina[" << i << "] = " << mnojina[i] << "\n";
+			cout << "[" << mnojina[i] << "] " ;
 		}
-		cout << "Merge operation " << endl;
-		cout << "Intersection operation " << endl;
-		cout << "Difference operation " << endl;
+
+		cout << endl;
+		//cout << "Intersection operation " << endl;
+		//cout << "Difference operation " << endl;
+	}
+	Set operator+(const Set& a) {
+		int new_beg = min(this->beg, a.beg);
+
+		int new_end = max(this->end, a.end);
+
+		Set result = Set(new_beg, new_end);
+
+		for (int i = 0; i < this->size; i++) {
+			result.Setvalue(i, this->mnojina[i]);
+		}
+
+		for (int i = 0; i < a.size; i++) {
+			result.Setvalue(this->size + i, a.mnojina[i]);
+		}
+
+		return result;
+	}	
+	
+	Set operator*(Set& a) {
+		int new_beg = max(this->beg, a.beg);
+
+		int new_end = min(this->end, a.end);
+
+		Set result = Set(new_beg, new_end);
+		int j=0; 
+		for (int i = 0; i < this->size; i++) {
+			if (a.getCount(mnojina[i]) > 0) {
+				result.Setvalue(j, mnojina[i]); 
+				j++;
+			}
+		}
+		
+		return result;
 	}
 };
+
 
 int Task2()
 {
 	Set obj(1, 5, 4);
 	obj.printInfo();
+	obj.Setvalue(2, 6);
+	obj.printInfo();
+	int a = obj.getCount(6);
+	cout << " a: " << a << endl;
+
+
+	Set obj1(3, 8, 4);
+	obj1.Setvalue(1, 8);
+	obj1.Setvalue(2, 5);
+	obj1.Setvalue(3, 3);
+
+	Set obj2(20, 40, 20);
+	obj2.Setvalue(1, 21);
+	obj2.Setvalue(2, 22);
+	obj2.Setvalue(3, 23);
+
+	Set obj3 = obj1 + obj2;
+	obj1.printInfo();
+	obj2.printInfo();
+	obj3.printInfo();
+
+	Set obj4(1, 8, 2);
+	obj4.Setvalue(1, 3);
+	obj4.Setvalue(2, 4);
+	obj4.Setvalue(3, 6);
+	obj4.Setvalue(4, 7);
+	obj4.Setvalue(5, 8);
+
+
+	Set obj5(5, 20, 7);
+	obj5.Setvalue(1, 8);
+	obj5.Setvalue(2, 10);
+
+	Set obj6 = obj4 * obj5;
+	obj4.printInfo();
+	obj5.printInfo();
+	obj6.printInfo();
 
 	cout << " End testing \n";
 	_getch();
