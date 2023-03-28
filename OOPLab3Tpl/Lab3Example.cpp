@@ -294,8 +294,16 @@ public:
 			}
 		}
 		return count;
-
 	}
+
+	unsigned int GetObjectWeight() {
+		unsigned int j = 0;
+		for (int i = 0; i < this->size; i++) {
+			j = j + this->mnojina[i];
+		}
+		return j;
+	}
+
 
 	void printInfo()
 	{
@@ -344,6 +352,63 @@ public:
 		
 		return result;
 	}
+
+	Set operator-(Set& a) {
+		int new_beg = this->beg;
+
+			int new_end = this->end;
+
+		Set result = Set(new_beg, new_end);
+		int j = 0;
+		for (int i = 0; i < this->size; i++) {
+			if (a.getCount(mnojina[i]) == 0) {
+				result.Setvalue(j, mnojina[i]);
+				j++;
+			}
+		}
+
+		return result;
+	}
+
+	bool operator>(Set& a) {
+		 
+		if (a.GetObjectWeight() < this->GetObjectWeight()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	bool operator<(Set& a) {
+
+		if (a.GetObjectWeight() > this->GetObjectWeight()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	bool operator==(Set& a) {
+
+		if (a.GetObjectWeight() == this->GetObjectWeight()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
+
+	bool operator!=(Set& a) {
+
+		if (a.GetObjectWeight() != this->GetObjectWeight()) {
+			return true;
+		}
+		else {
+			return false;
+		}
+	}
 };
 
 
@@ -367,6 +432,7 @@ int Task2()
 	obj2.Setvalue(2, 22);
 	obj2.Setvalue(3, 23);
 
+	cout << "Union operation" << endl;
 	Set obj3 = obj1 + obj2;
 	obj1.printInfo();
 	obj2.printInfo();
@@ -380,14 +446,75 @@ int Task2()
 	obj4.Setvalue(5, 8);
 
 
-	Set obj5(5, 20, 7);
+	Set obj5(1, 35, 7);
 	obj5.Setvalue(1, 8);
 	obj5.Setvalue(2, 10);
 
+    cout << "Intersection operation " << endl;
 	Set obj6 = obj4 * obj5;
 	obj4.printInfo();
 	obj5.printInfo();
 	obj6.printInfo();
+
+	Set obj8(20, 40, 22);
+	obj8.Setvalue(1, 28);
+	obj8.Setvalue(2, 39);
+	obj8.Setvalue(3, 31);
+	
+
+	Set obj9(15, 45, 16);
+	obj9.Setvalue(1, 42);
+	obj9.Setvalue(2, 38);
+	obj9.Setvalue(3, 39);
+
+	cout << "Subtraction operation " << endl;
+	Set obj7 = obj8 - obj9;
+	obj8.printInfo();
+	obj9.printInfo();
+	obj7.printInfo();
+
+
+	cout << "Operation bigger then" << endl;
+	if (obj4 > obj2) {
+		cout << "obj4 > obj2" << endl;
+	}
+	else {
+		cout << "obj4 < obj2" << endl;
+	}
+
+
+	cout << "Operation less than" << endl;
+	if (obj4 < obj2) {
+		cout << "obj4 < obj2" << endl;
+	}
+	else {
+		cout << "obj4 > obj2" << endl;
+	}
+
+
+	cout << "The operation is equal" << endl;
+	if (obj4 == obj2) {
+		cout << "obj4 = obj2" << endl;
+	}
+	else {
+		cout << "obj4 =! obj2" << endl;
+	}
+
+
+	cout << "The operation is тще equal" << endl;
+	if (obj4 != obj2) {
+		cout << "obj4 != obj2" << endl;
+	}
+	else {
+		cout << "obj4 = obj2" << endl;
+	}
+
+
+
+	//Set obj10 = obj8 - obj7;
+	//obj7.printInfo();
+	//obj8.printInfo();
+	//obj10.printInfo();
 
 	cout << " End testing \n";
 	_getch();
