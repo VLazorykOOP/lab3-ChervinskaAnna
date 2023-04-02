@@ -68,7 +68,7 @@ public:
 	}
 };
 
-	 int Task1()
+void TestCube()
 	{
 		Cube obj;
 		obj.printInfo();
@@ -91,9 +91,6 @@ public:
 		obj.setColor(10001);
 		obj.printInfo();
 		cout << " End testing \n";
-		_getch(); 
-		return 0;
-
 	}
 
 // Ключове слово static 
@@ -226,9 +223,20 @@ bool Vec2::CompLessAll(Vec2& s) {
 	return false;
 }
 
+enum SetState {
+	NoErrors,
+	NoMemori, //не вистачає пам'яті
+	NotInRange, //виходить за межі множини
+	InvalidNumber // ініціалізація числом
+};
+
+static string SetStateStrings[] = { "NoErrors", "NoMemori", "NotInRange", "InvalidNumber" };
+
+
 class Set {
 	unsigned int* mnojina;
 	unsigned int beg, end, size;
+	SetState state = NoErrors;
 
 public:
 	Set() {
@@ -254,6 +262,11 @@ public:
 		this->beg = beg;
 		this->end = end;
 		size = end - beg;
+
+		if (end < 0 || 0 < beg) {
+			state = InvalidNumber;
+		}
+
 		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
 		for (int i = 0; i < size; i++) {
 			mnojina[i] = 0;
@@ -263,6 +276,11 @@ public:
 		this->beg = beg;
 		this->end = end;
 		size = end - beg;
+
+		if (end < value || value < beg) {
+			state = InvalidNumber;
+		}
+
 		mnojina = (unsigned int*)calloc(size, sizeof(unsigned int));
 		for (int i = 0; i < size; i++) {
 			mnojina[i] = value;
@@ -280,12 +298,38 @@ public:
 			this->mnojina[i] = ref_Point.mnojina[i];
 		}
 	}
+
+	Set& operator=(const Set& a) {
+		this->beg = a.beg;
+		this->end = a.end;
+		this->size = a.size;
+		free(mnojina);
+		mnojina = (unsigned int*)calloc(a.size, sizeof(unsigned int));
+		for (int i = 0; i < a.size; i++) {
+			this->mnojina[i] = a.mnojina[i];
+		}
+		return *this;
+
+	}
+
 	~Set() {
 		free(mnojina);
 	}
+
 	void Setvalue(int i, unsigned int value ) {
-		mnojina[i] = value; 
+
+		if (end < value || value < beg) {
+			state = NotInRange;
+		}
+
+		if (i > size) {
+		state = NoMemori;
+		}
+		else {
+			mnojina[i] = value;
+		}
 	}
+
 	int getCount(unsigned int value) {
 		int count=0;
 		for (int i = 0; i < size; i++) {
@@ -308,8 +352,8 @@ public:
 	void printInfo()
 	{
 	
-		cout << "Beg = " << beg << "   " << "End = " << end << "   " << "Size = " << size << "   ";
-
+		cout << "Beg =" << beg << " " << "End =" << end << " " << "Size =" << size << " ";
+		cout << "State=" << SetStateStrings[state] << " ";
 		for (int i = 0; i < size; i++) {
 			cout << "[" << mnojina[i] << "] " ;
 		}
@@ -411,8 +455,35 @@ public:
 	}
 };
 
+void TestPrisvoena() {
+	Set obj1(3, 8, 4);
+	obj1.Setvalue(1, 8);
+	obj1.Setvalue(2, 5);
+	obj1.Setvalue(3, 3);
 
-int Task2()
+	Set obj2(20, 40, 20);
+	obj2.Setvalue(1, 21);
+	obj2.Setvalue(2, 22);
+	obj2.Setvalue(3, 23);
+	cout << "Before Prisvoena" << endl;
+	obj1.printInfo();
+	obj2.printInfo();
+	obj2 = obj1;
+	cout << "After Prisvoena" << endl;
+	obj1.printInfo();
+	obj2.printInfo();
+}
+
+void TestErrors() {
+	Set obj4(1, 8, 200);
+	obj4.printInfo();
+	obj4.Setvalue(200,2);
+	obj4.printInfo();
+	obj4.Setvalue(2, 200);
+	obj4.printInfo();
+}
+
+void Inf()
 {
 	Set obj(1, 5, 4);
 	obj.printInfo();
@@ -421,6 +492,9 @@ int Task2()
 	int a = obj.getCount(6);
 	cout << " a: " << a << endl;
 
+}
+
+void Operation1(){
 
 	Set obj1(3, 8, 4);
 	obj1.Setvalue(1, 8);
@@ -450,7 +524,7 @@ int Task2()
 	obj5.Setvalue(1, 8);
 	obj5.Setvalue(2, 10);
 
-    cout << "Intersection operation " << endl;
+	cout << "Intersection operation " << endl;
 	Set obj6 = obj4 * obj5;
 	obj4.printInfo();
 	obj5.printInfo();
@@ -460,7 +534,7 @@ int Task2()
 	obj8.Setvalue(1, 28);
 	obj8.Setvalue(2, 39);
 	obj8.Setvalue(3, 31);
-	
+
 
 	Set obj9(15, 45, 16);
 	obj9.Setvalue(1, 42);
@@ -473,6 +547,26 @@ int Task2()
 	obj9.printInfo();
 	obj7.printInfo();
 
+}
+
+void Operation2() {
+	Set obj2(20, 40, 20);
+	obj2.Setvalue(1, 21);
+	obj2.Setvalue(2, 22);
+	obj2.Setvalue(3, 23);
+
+	Set obj4(1, 8, 2);
+	obj4.Setvalue(1, 3);
+	obj4.Setvalue(2, 4);
+	obj4.Setvalue(3, 6);
+	obj4.Setvalue(4, 7);
+	obj4.Setvalue(5, 8);
+
+
+	cout << "obj2: ";
+	obj2.printInfo();
+	cout << "obj4: ";
+	obj4.printInfo();
 
 	cout << "Operation bigger then" << endl;
 	if (obj4 > obj2) {
@@ -508,18 +602,36 @@ int Task2()
 	else {
 		cout << "obj4 = obj2" << endl;
 	}
-
-
-
-	//Set obj10 = obj8 - obj7;
-	//obj7.printInfo();
-	//obj8.printInfo();
-	//obj10.printInfo();
+}
+ 
+void Prisvoena(){
+	cout << "The operation =" << endl;
+	TestPrisvoena();
 
 	cout << " End testing \n";
-	_getch();
-	return 0;
+}
 
+void TestMnozhina() {
+	char ch;
+	do {
+		cout << "\nSelect operation: \n";
+		cout << "    1.  Information \n";
+		cout << "    2.  Operation *,+,- \n";
+		cout << "    3.  Operation >,<,=,!= \n";
+		cout << "    4.  Operation Prisvoena \n";
+		cout << "    5.  Test Errors \n";
+		cout << "    6.  Exit \n";
+
+		ch = _getch();
+		switch (ch) {
+		case '1': Inf(); break;
+		case '2': Operation1(); break;
+		case '3': Operation2(); break;
+		case '4': Prisvoena(); break;
+		case '5': TestErrors(); break;
+
+		}
+	} while (ch != '6');
 }
 
 int Task4()
@@ -588,6 +700,8 @@ int Task4()
 	return 1;
 
 }
+
+
 /*example  4
 Створити тип даних - клас вектор, який має вказівник на ComplexDouble, число елементів і змінну стану. У класі визначити
 o	 конструктор без параметрів( виділяє місце для одного елемента та інінціалізує його в нуль);

@@ -17,19 +17,18 @@ void SelectTask() {
 
     do {
         cout << "\n  Select Task:   \n";
-        cout << "    1.  Task 1 \n";
-        cout << "    2.  Task 2 \n";
-        cout << "    3.  Task 3 \n";
-        cout << "    4.  Exit \n";
+        cout << "    1.  TestCube \n";
+        cout << "    2.  TestMnozhina \n";
+        cout << "    3.  Exit \n";
 
         ch = _getch();
         switch (ch) {
-        case '1': Task1(); break;
-        case '2': Task2(); break;
-        case '3': Task3(); break;
+        case '1': TestCube(); break;
+        case '2': TestMnozhina(); break;
         }
-    } while (ch != '4');
+    } while (ch != '3');
 }
+
 
 int main()
 {
